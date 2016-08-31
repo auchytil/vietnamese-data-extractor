@@ -1,5 +1,6 @@
 # utils.py
 
+
 def enough_spaces(data: str):
     """
     Checks whether data contain enough spaces.
@@ -24,7 +25,7 @@ def no_numbers(data: str):
     return True
 
 
-def no_special_chars(data):
+def no_special_chars(data: str):
     """
     Checks whether data contain special chars.
 
@@ -38,28 +39,32 @@ def no_special_chars(data):
     return True
 
 
-def remove_special_chars(sentence):
+def remove_special_chars(text: str):
     """
     Removes the special characters.
 
-    :param sentence: text to be modified
+    :param text: text to be modified
     :return: modified data
     """
-    filtered = sentence.strip().replace('\'', '').replace('"', '').replace('”', '')
-    filtered = filtered.replace('–', '').replace('“', '').replace('  ', ' ')
+    filtered = text.strip().replace('\'', '').replace('"', '').replace('”', '')\
+                        .replace('–', '').replace('“', '').replace('!', '.').replace('?', '.')\
+                        .replace('  ', ' ')
     return filtered.lower()
 
 
-def filter_trash(fname):
+def filter_trash(file_name: str):
     """
     Removes special chars.
 
-    :param fname: path to the file which will be filtered
+    :param file_name: path to the file which will be filtered
+    :return: filtered list of sentences
     """
-    with open(fname, 'r') as f:
+    filtered_data = []
+    with open(file_name, 'r') as f:
         for line in f:
             for sentence in line.split('.'):
                 content = remove_special_chars(sentence)
                 if (len(content) > 0 and no_special_chars(content) and enough_spaces(content)
                     and no_numbers(content)):
-                    print(content)
+                    filtered_data.append(content)
+    return filtered_data
